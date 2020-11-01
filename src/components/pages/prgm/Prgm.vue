@@ -221,7 +221,7 @@ export default class Prgm extends Vue {
             });
             resolve(true);
           } else {
-            if (maxEndTimestamp < Date.now()) {
+            if (maxEndTimestamp > Date.now()) {
               if (this.pingActive) {
                 setTimeout(() => retry(retry), 1000);
               }
