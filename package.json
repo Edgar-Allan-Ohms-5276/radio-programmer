@@ -1,55 +1,47 @@
 {
-  "name": "eao-radio-programmer",
+  "name": "radio-programmer",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service electron:build",
     "lint": "vue-cli-service lint",
-    "electron:build": "vue-cli-service electron:build",
-    "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "start": "vue-cli-service electron:serve --no-sandbox"
   },
   "main": "background.js",
   "dependencies": {
+    "cap": "^0.2.1",
     "core-js": "^3.6.5",
-    "normalize.css": "^8.0.1",
-    "open": "^7.1.0",
-    "sass": "^1.26.10",
-    "sass-loader": "^9.0.3",
+    "csv-parser": "^2.3.3",
+    "tcp-ping": "^0.1.1",
     "vue": "^2.6.11",
-    "vue-material-design-icons": "^4.8.0"
+    "vue-class-component": "^7.2.3",
+    "vue-material-design-icons": "^4.9.0",
+    "vue-property-decorator": "^8.4.2",
+    "vue-router": "^3.2.0"
   },
   "devDependencies": {
+    "@types/electron-devtools-installer": "^2.2.0",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "@vue/cli": "^4.5.7",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "^4.5.7",
+    "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "babel-eslint": "^10.1.0",
+    "@vue/eslint-config-typescript": "^5.0.2",
     "electron": "^9.0.0",
     "electron-devtools-installer": "^3.1.0",
+    "electron-rebuild": "^2.2.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "node-loader": "^1.0.2",
+    "sass": "^1.27.0",
+    "sass-loader": "^10.0.3",
+    "typescript": "~3.9.3",
     "vue-cli-plugin-electron-builder": "~2.0.0-rc.4",
     "vue-template-compiler": "^2.6.11"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+  }
 }
