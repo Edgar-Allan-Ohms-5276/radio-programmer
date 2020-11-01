@@ -15,8 +15,12 @@
       <button class="button-large" v-on:click="startProgramRadio()">
         Program Radio
       </button>
-      <h1 class="ofs-prg-seperator">OR</h1>
-      <button class="button-large" v-on:click="startFlashRadio()">
+      <h1 class="ofs-prg-seperator" v-if="radioFlasherAllowed">OR</h1>
+      <button
+        class="button-large"
+        v-if="radioFlasherAllowed"
+        v-on:click="startFlashRadio()"
+      >
         Flash Radio
       </button>
     </div>
@@ -30,9 +34,10 @@ import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue";
 import Input from "../../form/Input.vue";
 import Select from "../../form/Select.vue";
 import Checkbox from "../../form/Checkbox.vue";
-import { Mode } from "../../programming/radio";
+import { Mode } from "../../../programming/radio";
 import querystring from "querystring";
 import "./OffseasonProgrammer.scss";
+import { getFirmwarePath } from "@/firmware/firmware-provider";
 
 @Component({
   components: {
@@ -44,6 +49,8 @@ import "./OffseasonProgrammer.scss";
 })
 export default class OffseasonProgrammerKiosk extends Vue {
   Mode = Mode;
+
+  radioFlasherAllowed = getFirmwarePath() != null;
 
   teamNumInput = "";
 
@@ -81,7 +88,7 @@ export default class OffseasonProgrammerKiosk extends Vue {
     this.bandwidth = this.$route.query["bandwidth"] === "true";
     this.enddate = parseInt(this.$route.query["enddate"].toString());
     this.prgmCheck = this.$route.query["prgmCheck"] === "true";
-    this.netInterface = this.$route.query["netInterface"].toString()
+    this.netInterface = this.$route.query["netInterface"].toString();
   }
 
   startProgramRadio() {
@@ -103,7 +110,7 @@ export default class OffseasonProgrammerKiosk extends Vue {
           enableBandwidthLimit: this.bandwidth,
           enddate: this.enddate,
           performCheck: this.prgmCheck,
-          kiosk: true
+          kiosk: true,
         })
     );
   }
@@ -113,7 +120,7 @@ export default class OffseasonProgrammerKiosk extends Vue {
       "/flasher?" +
         querystring.stringify({
           kiosk: true,
-          presetInterface: this.netInterface
+          presetInterface: this.netInterface,
         })
     );
   }

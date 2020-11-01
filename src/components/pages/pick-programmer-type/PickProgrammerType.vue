@@ -32,6 +32,7 @@
 </template>
 
 <script lang="ts">
+import { getFirmwarePath } from '@/firmware/firmware-provider';
 import Vue from "vue";
 import Component from "vue-class-component";
 import "./PickProgrammerType.scss";
@@ -42,8 +43,6 @@ export default class PickProgrammerType extends Vue {
     this.$router.push(page);
   }
   
-  get radioFlasherAllowed() {
-    return true
-  }
+  radioFlasherAllowed = getFirmwarePath() != null
 }
 </script>

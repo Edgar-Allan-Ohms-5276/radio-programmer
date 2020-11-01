@@ -2,6 +2,12 @@
   "name": "radio-programmer",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Edgar-Allan-Ohms-5276/radio-programmer.git"
+  },
+  "description": "An FRC Radio Programmer made be EAO 5276",
+  "author": "Edgar Allan Ohms 5276",
   "scripts": {
     "build": "vue-cli-service electron:build",
     "lint": "vue-cli-service lint",

@@ -7,7 +7,10 @@ module.exports = {
         productName: "EAO Radio Programmer",
         extraFiles: [
           "flasher"
-        ]
+        ],
+        nsis: {
+          oneClick: true
+        }
       }
     }
   }

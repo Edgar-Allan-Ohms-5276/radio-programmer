@@ -15,8 +15,12 @@
       <button class="button-large" v-on:click="startProgramRadio()">
         Program Radio
       </button>
-      <h1 class="nvr-prg-seperator">OR</h1>
-      <button class="button-large" v-on:click="startFlashRadio()">
+      <h1 class="nvr-prg-seperator" v-if="radioFlasherAllowed">OR</h1>
+      <button
+        class="button-large"
+        v-if="radioFlasherAllowed"
+        v-on:click="startFlashRadio()"
+      >
         Flash Radio
       </button>
     </div>
@@ -30,10 +34,11 @@ import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue";
 import Input from "../../form/Input.vue";
 import Select from "../../form/Select.vue";
 import Checkbox from "../../form/Checkbox.vue";
-import { Mode } from "../../programming/radio";
+import { Mode } from "../../../programming/radio";
 import querystring from "querystring";
 import "./NevermoreProgrammer.scss";
-import { TeamEntry } from './NevermoreProgrammerSetup.vue';
+import { TeamEntry } from "./NevermoreProgrammerSetup.vue";
+import { getFirmwarePath } from "@/firmware/firmware-provider";
 
 @Component({
   components: {
@@ -46,9 +51,11 @@ import { TeamEntry } from './NevermoreProgrammerSetup.vue';
 export default class NevermoreProgrammerKiosk extends Vue {
   Mode = Mode;
 
+  radioFlasherAllowed = getFirmwarePath() != null;
+
   teamNumInput = "";
 
-  importData: { [teamNum: string]: TeamEntry } | "network"
+  importData: { [teamNum: string]: TeamEntry } | "network";
   wifiBand: Mode;
   firewall: boolean;
   bandwidth: boolean;
@@ -74,15 +81,15 @@ export default class NevermoreProgrammerKiosk extends Vue {
     }
 
     this.wifiBand = this.$route.query["wifiBand"] as Mode;
-    this.importData = this.$route.query["importData"] as any
+    this.importData = this.$route.query["importData"] as any;
     if (this.importData !== "network") {
-      this.importData = JSON.parse(this.importData as any)
+      this.importData = JSON.parse(this.importData as any);
     }
     this.firewall = this.$route.query["firewall"] === "true";
     this.bandwidth = this.$route.query["bandwidth"] === "true";
     this.enddate = parseInt(this.$route.query["enddate"].toString());
     this.prgmCheck = this.$route.query["prgmCheck"] === "true";
-    this.netInterface = this.$route.query["netInterface"].toString()
+    this.netInterface = this.$route.query["netInterface"].toString();
   }
 
   startProgramRadio() {
@@ -90,13 +97,13 @@ export default class NevermoreProgrammerKiosk extends Vue {
     if (!/\d{1,4}/.test(this.teamNumInput)) {
       this.errors.push("Invalid team number");
     }
-    let teamEntry: TeamEntry | null = null
+    let teamEntry: TeamEntry | null = null;
     if (this.importData === "network") {
       this.errors.push("Network import not implemented yet");
     } else {
-      console.log(Object.keys(this.importData))
+      console.log(Object.keys(this.importData));
       if (Object.keys(this.importData).includes(this.teamNumInput)) {
-        teamEntry = this.importData[this.teamNumInput]
+        teamEntry = this.importData[this.teamNumInput];
       }
     }
     if (teamEntry == null) {
@@ -116,7 +123,7 @@ export default class NevermoreProgrammerKiosk extends Vue {
           enableBandwidthLimit: this.bandwidth,
           enddate: this.enddate,
           performCheck: this.prgmCheck,
-          kiosk: true
+          kiosk: true,
         })
     );
   }
@@ -126,7 +133,7 @@ export default class NevermoreProgrammerKiosk extends Vue {
       "/flasher?" +
         querystring.stringify({
           kiosk: true,
-          presetInterface: this.netInterface
+          presetInterface: this.netInterface,
         })
     );
   }

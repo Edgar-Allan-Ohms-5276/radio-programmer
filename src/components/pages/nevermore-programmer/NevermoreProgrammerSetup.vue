@@ -118,7 +118,7 @@ import ArrowLeft from "vue-material-design-icons/ArrowLeft.vue";
 import Input from "../../form/Input.vue";
 import Select from "../../form/Select.vue";
 import Checkbox from "../../form/Checkbox.vue";
-import { Mode } from "../../programming/radio";
+import { Mode } from "../../../programming/radio";
 import querystring from "querystring";
 import electron from "electron";
 import fs from "fs";

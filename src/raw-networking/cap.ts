@@ -1,3 +1,4 @@
+import { getFirmwarePath } from '@/firmware/firmware-provider'
 import { FirmwareFile, readFirmwareFile, readFirmwareHeader } from '@/firmware/read-firmware'
 import { Cap } from 'cap'
 import { constructArpBytes, deconstructArpBytes, HardwareType, ArpOperation } from './arp'
@@ -99,7 +100,8 @@ export function startTftpResponder(interfaceId: string, fscb: FileSentCallback):
 
     let closed = false
     const core = (async () => {
-        const path = "flasher/firmware.bin"
+        const path = getFirmwarePath()
+        if (path == null) throw new Error("Firmware not found")
         const firmwareHeader = await readFirmwareHeader(path)
 
         let currentFileBlocks: Buffer[] = []

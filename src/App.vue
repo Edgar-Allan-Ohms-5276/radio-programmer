@@ -15,8 +15,9 @@
             src="/assets/eao_bird_circle.png"
             height="20px"
           />
-          Edgar Allan Ohms</component
-        >
+          Edgar Allan Ohms
+        </component>
+        <span> (v{{ version }})</span>
       </p>
     </div>
   </div>
@@ -37,6 +38,8 @@ import { Route } from "vue-router";
   },
 })
 export default class App extends Vue {
+  version = require("../package.json").version;
+
   linkType =
     "kiosk" in this.$route.query && this.$route.query["kiosk"] === "true"
       ? "span"
