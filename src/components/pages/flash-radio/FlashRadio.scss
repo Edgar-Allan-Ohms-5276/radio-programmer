@@ -1,0 +1,51 @@
+@use "../../../App.scss";
+
+.netad-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    user-select: text;
+    
+    > ul {
+        height: 40vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+}
+
+.netad-entry {
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    border: solid;
+    border-color: App.$ohms-primary-dark;
+    background-color: App.$ohms-primary-light;
+    transition: 0.3s;
+    color: white;
+    display: block;
+
+    &:hover {
+        background-color: App.$ohms-secondary;
+        cursor: pointer;
+    }
+}
+
+.netad-name {
+    margin: 5px;
+}
+
+.netad-id {
+    font-size: x-small;
+}
+
+.flash-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flasher-statuses {
+    display: flex;
+    align-items: center;
+    margin: 8px;
+}

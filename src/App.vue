@@ -1,51 +1,51 @@
 <template>
   <div>
-    <Menu />
+    <Topbar />
     <div id="app">
       <EntryPoint />
-      <p>Created by the <a href="https://edgarallanohms.com" target="_blank"><img style="vertical-align:middle; display:inline;" class="eao-menu-img" src="./components/menu/static_img_eao_bird_circle.png" height="20px" /> Edgar Allan Ohms</a></p>
+      <p>
+        Created by the
+        <component
+          :is="linkType"
+          href="https://edgarallanohms.com"
+          target="_blank"
+          ><img
+            style="vertical-align: middle; display: inline"
+            class="eao-menu-img"
+            src="/assets/eao_bird_circle.png"
+            height="20px"
+          />
+          Edgar Allan Ohms</component
+        >
+      </p>
     </div>
   </div>
 </template>
 
-<script>
-import Menu from './components/menu/Menu.vue'
-import EntryPoint from './components/EntryPoint.vue'
+<script lang="ts">
+import Vue from "vue";
+import { Component, Watch } from "vue-property-decorator";
+import Topbar from "./components/topbar/Topbar.vue";
+import EntryPoint from "./components/EntryPoint.vue";
+import "./App.scss";
+import { Route } from "vue-router";
 
-export default {
-  name: 'App',
+@Component({
   components: {
+    Topbar,
     EntryPoint,
-    Menu
+  },
+})
+export default class App extends Vue {
+  linkType =
+    "kiosk" in this.$route.query && this.$route.query["kiosk"] === "true"
+      ? "span"
+      : "a";
+
+  @Watch("$route")
+  onPropertyChanged(route: Route) {
+    this.linkType =
+      "kiosk" in route.query && route.query["kiosk"] === "true" ? "span" : "a";
   }
 }
 </script>
-
-<style>
-body {
-  padding: 0;
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #263238;
-  color: white;
-}
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: white;
-  margin: 0;
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  width: 100%;
-}
-
-a {
-    color: #ff6659;
-}
-</style>

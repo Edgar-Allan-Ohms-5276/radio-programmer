@@ -1,0 +1,37 @@
+@use "../../App.scss";
+
+.select-effect {
+    float: left;
+    position: relative;
+	text-align: left;
+	margin: 15px;
+}
+
+.select {
+	font: 15px/24px 'Muli', sans-serif;
+	color: white;
+	width: 100%;
+    box-sizing: border-box;
+    letter-spacing: 1px;
+	border: 1px solid white;
+	padding: 7px 14px;
+	transition: 0.4s;
+    background: transparent;
+    padding: 10px;
+
+    option {
+        background-color: App.$ohms-primary;
+    }
+}
+
+.select ~ label {
+    top: -18px;
+	left: 0;
+	font-size: 12px;
+	position: absolute;
+	width: 100%;
+	color: #aaa;
+	transition: 0.3s;
+	z-index: -1;
+    letter-spacing: 0.5px;
+}

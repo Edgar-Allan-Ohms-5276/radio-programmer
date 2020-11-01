@@ -1,0 +1,93 @@
+@use "../../App.scss";
+
+.input-effect {
+    float: left;
+    position: relative;
+	text-align: left;
+	margin: 15px;
+}
+
+.text-input {
+	font: 15px/24px 'Muli', sans-serif;
+	color: white;
+	width: 100%;
+    box-sizing: border-box;
+    letter-spacing: 1px;
+	outline: none;
+	border: 1px solid white;
+	padding: 7px 14px;
+	transition: 0.4s;
+    background: transparent;
+}
+
+.text-input ~ .focus-border:before,
+.text-input ~ .focus-border:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 2px;
+	background-color: App.$ohms-secondary;
+    transition: 0.3s;
+}
+
+.text-input ~ .focus-border:after {
+	top: auto;
+	bottom: 0;
+	left: auto;
+    right: 0;
+}
+
+.text-input ~ .focus-border i:before,
+.text-input ~ .focus-border i:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 2px;
+	height: 0;
+	background-color: App.$ohms-secondary;
+    transition: 0.4s;
+}
+
+.text-input ~ .focus-border i:after {
+	left: auto;
+	right: 0;
+	top: auto;
+    bottom: 0;
+}
+
+.text-input:focus ~ .focus-border:before,
+.text-input:focus ~ .focus-border:after {
+	width: 100%;
+    transition: 0.3s;
+}
+
+.text-input:focus ~ .focus-border i:before,
+.text-input:focus ~ .focus-border i:after {
+	height: 100%;
+    transition: 0.4s;
+}
+
+.text-input ~ label {
+	position: absolute;
+	left: 5%;
+	width: 100%;
+	top: 10px;
+	color: #aaa;
+	transition: 0.3s;
+	z-index: -1;
+    letter-spacing: 0.5px;
+}
+
+.text-input:focus ~ label, .text-input.has-content ~ label {
+	top: -18px;
+	left: 0;
+	font-size: 12px;
+    transition: 0.3s;
+}
+
+.text-input:focus ~ label {
+    color: App.$ohms-secondary;
+}

@@ -1,0 +1,20 @@
+.nvr-prg-holder {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.nvr-prg-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nvr-bottom-space {
+    margin-bottom: 30px;
+}
+
+.nvr-selected-file {
+    margin-left: 10px;
+}

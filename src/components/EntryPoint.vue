@@ -1,19 +1,12 @@
 <template>
-  <PickProgrammerType v-if="page == 'programmer_type'" />
+  <router-view></router-view>
 </template>
 
-<script>
-import PickProgrammerType from "./PickProgrammerType.vue";
+<script lang="ts">
+import Vue from "vue";
+import Component from "vue-class-component";
 
-export default {
-  name: 'EntryPoint',
-  components: {
-    PickProgrammerType
-  },
-  data: function() {
-    return {
-      page: "programmer_type"
-    }
-  }
-}
+@Component
+export default class EntryPoint extends Vue {}
+
 </script>

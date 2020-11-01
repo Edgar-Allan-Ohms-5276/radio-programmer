@@ -1,0 +1,48 @@
+@use '../../App';
+
+.topbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  background-color: App.$ohms-primary-dark;
+  z-index: 100000000000000;
+  -webkit-app-region: no-drag;
+}
+
+.topbar-dragable {
+  -webkit-app-region: drag;
+}
+
+.topbar-logo {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.topbar-button {
+  height: 100%;
+  padding: 0 15px;
+  border: none;
+  background: transparent;
+  outline: none;
+  -webkit-app-region: no-drag;
+}
+
+.topbar-button:hover {
+  background: rgba(221, 221, 221, 0.2);
+}
+
+.close-btn:hover {
+  background: rgb(255, 0, 0);
+}
+
+.topbar-button i {
+  color: white;
+}
+
+.eao-menu-img {
+  margin-left: 5px;
+}
