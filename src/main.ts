@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
 import PickProgrammerType from "./components/pages/pick-programmer-type/PickProgrammerType.vue"
+import Error from "./components/pages/error/Error.vue"
 import FlashRadio from "./components/pages/flash-radio/FlashRadio.vue"
 import Prgm from "./components/pages/prgm/Prgm.vue"
 import StandardProgrammer from "./components/pages/standard-programmer/StandardProgrammer.vue"
@@ -10,12 +11,16 @@ import OffseasonProgrammerKiosk from "./components/pages/offseason-programmer/Of
 import NevermoreProgrammerSetup from "./components/pages/nevermore-programmer/NevermoreProgrammerSetup.vue"
 import NevermoreProgrammerKiosk from "./components/pages/nevermore-programmer/NevermoreProgrammerKiosk.vue"
 import electron from 'electron'
+import LongPress from 'vue-directive-long-press'
+ 
+Vue.directive('long-press', LongPress)
 
 
 Vue.config.productionTip = false
 
 const routes = [
   { path: "/", component: PickProgrammerType },
+  { path: "/error", component: Error },
   { path: "/prgm", component: Prgm },
   { path: "/flasher", component: FlashRadio },
   { path: "/programmer/standard", component: StandardProgrammer },

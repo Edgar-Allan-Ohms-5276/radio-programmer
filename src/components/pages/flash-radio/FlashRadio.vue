@@ -25,7 +25,10 @@
     <div class="flash-holder" v-if="state === State.PRE_FLASH">
       <h2>Connect your radio</h2>
       <p>Ensure your radio is turned off before connecting</p>
-      <p>Make sure the radio is plugged into the right port (labelled 802.3af POE)</p>
+      <p>
+        Make sure the radio is plugged into the right port (labelled 802.3af
+        POE)
+      </p>
       <span class="loader" />
       <button
         class="button"
@@ -103,6 +106,7 @@ import {
   startArpResponder,
   startTftpResponder,
 } from "@/raw-networking/cap";
+import querystring from "querystring";
 
 enum State {
   SELECT_ADAPTER,
@@ -128,7 +132,7 @@ export default class FlashRadio extends Vue {
     this.findNetworkAdapters();
     this.resetStatuses();
     if ("presetInterface" in this.$route.query) {
-      this.flash(this.$route.query["presetInterface"] as string)
+      this.flash(this.$route.query["presetInterface"] as string);
     }
   }
 
@@ -170,52 +174,62 @@ export default class FlashRadio extends Vue {
   }
 
   async flash(id: string) {
-    this.cancelFlash();
-    this.cancelArp = startArpResponder(id, () => {
-      this.state = State.FLASHING;
-    });
-    this.cancelTftp = startTftpResponder(id, (fileName, block, total) => {
-      if (fileName === "fwupgrade.cfg") {
-        Vue.set(this.statuses, 0, {
-          lineText: `Sending fwupgrade.cfg (${block}/${total})`,
-          done: block === total,
-        });
-      }
-      if (fileName === "kernel") {
-        Vue.set(this.statuses, 1, {
-          lineText: `Sending kernel (${block}/${total})`,
-          done: block === total,
-        });
-      }
-      if (fileName === "rootfs") {
-        Vue.set(this.statuses, 2, {
-          lineText: `Sending rootfs (${block}/${total})`,
-          done: block === total,
-        });
-      }
-
-      this.cancelWrite && this.cancelWrite();
-      if (
-        this.statuses[0].done &&
-        this.statuses[1].done &&
-        this.statuses[2].done
-      ) {
-        Vue.set(this.statuses, 3, {
-          lineText: "Writing image to flash",
-          done: false,
-        });
-        const tID = setTimeout(() => {
-          Vue.set(this.statuses, 3, {
-            lineText: "Image written to flash",
-            done: true,
+    try {
+      this.cancelFlash();
+      this.cancelArp = startArpResponder(id, () => {
+        this.state = State.FLASHING;
+      });
+      this.cancelTftp = startTftpResponder(id, (fileName, block, total) => {
+        if (fileName === "fwupgrade.cfg") {
+          Vue.set(this.statuses, 0, {
+            lineText: `Sending fwupgrade.cfg (${block}/${total})`,
+            done: block === total,
           });
-          this.flashOver();
-        }, 60 * 1000);
-        this.cancelWrite = () => clearTimeout(tID);
-      }
-    });
-    this.currentNetId = id;
-    this.state = State.PRE_FLASH;
+        }
+        if (fileName === "kernel") {
+          Vue.set(this.statuses, 1, {
+            lineText: `Sending kernel (${block}/${total})`,
+            done: block === total,
+          });
+        }
+        if (fileName === "rootfs") {
+          Vue.set(this.statuses, 2, {
+            lineText: `Sending rootfs (${block}/${total})`,
+            done: block === total,
+          });
+        }
+
+        this.cancelWrite && this.cancelWrite();
+        if (
+          this.statuses[0].done &&
+          this.statuses[1].done &&
+          this.statuses[2].done
+        ) {
+          Vue.set(this.statuses, 3, {
+            lineText: "Writing image to flash",
+            done: false,
+          });
+          const tID = setTimeout(() => {
+            Vue.set(this.statuses, 3, {
+              lineText: "Image written to flash",
+              done: true,
+            });
+            this.flashOver();
+          }, 60 * 1000);
+          this.cancelWrite = () => clearTimeout(tID);
+        }
+      });
+      this.currentNetId = id;
+      this.state = State.PRE_FLASH;
+    } catch (e) {
+      this.$router.push(
+        "/error?" +
+          querystring.stringify({
+            error: e.toString(),
+            errType: "cap",
+          })
+      );
+    }
   }
 
   async flashOver() {

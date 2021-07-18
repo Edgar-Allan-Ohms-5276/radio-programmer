@@ -6,7 +6,7 @@ module.exports = {
       builderOptions: {
         productName: "EAO Radio Programmer",
         extraFiles: [
-          "flasher"
+          "resources"
         ],
         nsis: {
           oneClick: true
