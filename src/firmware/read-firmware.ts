@@ -15,7 +15,7 @@ export interface FirmwareFile {
 export async function readFirmwareHeader(path: string): Promise<FirmwareHeader> {
     const file = fs.createReadStream(path, {start: 0, end: 0xFFFF})
 
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
         file.on('readable', function () {
             resolve()
         })
@@ -55,7 +55,7 @@ export async function readFirmwareHeader(path: string): Promise<FirmwareHeader> 
 export async function readFirmwareFile(path: string, start: number, length: number): Promise<Buffer> {
     start += 0xFFFF + 1
     const file = fs.createReadStream(path, {start: start, highWaterMark: length})
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
         file.on('readable', function () {
             resolve()
         })

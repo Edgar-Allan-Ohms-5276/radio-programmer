@@ -1,6 +1,13 @@
+let useOpenWRT = false
+
+export function setUseOpenWRT(v: boolean) {
+    console.log("Using OPENWRT: " + v)
+    useOpenWRT = v
+}
+
 export function getFirmwarePath(): string | null {
-    if (process.env.FIRMWARE === "openwrt") {
-        return "flasher/openwrt-OM5PAC.bin"
+    if (useOpenWRT) {
+        return "resources/firmware/openwrt-OM5PAC.bin"
     }
-    return "flasher/FIRST-OM5PAC.bin"
+    return "resources/firmware/FIRST-OM5PAC.bin"
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="button back-button" v-on:click="back()">
+    <button class="button back-button" v-on:click="back()" v-if="state !== State.REQUIRE_APPROVAL">
       <ArrowLeft /> Go Back
     </button>
     <div class="prgm-holder" v-if="state === State.PROGRAMMING">
@@ -141,6 +141,7 @@ export default class Prgm extends Vue {
   }
 
   async startProgramming() {
+    try { this.continueProgramming(false) } catch {}
     this.pingActive = true;
     this.state = State.PROGRAMMING;
     this.resetStatuses();

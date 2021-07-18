@@ -57,22 +57,10 @@ export async function programRadio(
 
   const firmwareVersion = data.split(/:|\n/)[2].trim()
   console.log(`Firmware version: ${firmwareVersion}`)
-  const firmwareVersionSplit = firmwareVersion.split(/\./)
-  const allowedVersionSplit = minimumFirmwareVersion.split(/\./)
-  let firmwareValid = false
-  if (firmwareVersionSplit[0] > allowedVersionSplit[0]) {
-    firmwareValid = true
-  } else if (firmwareVersionSplit[0] === allowedVersionSplit[0]) {
-    if (firmwareVersionSplit[1] > allowedVersionSplit[1]) {
-      firmwareValid = true
-    } else if (firmwareVersionSplit[1] === allowedVersionSplit[1]) {
-      if (firmwareVersionSplit[2] >= allowedVersionSplit[2]) {
-        firmwareValid = true
-      }
-    }
-  }
+  const firmwareVersionNumber = parseInt(firmwareVersion.split(/\./).map(i => i.padStart(2,'0')).join(""))
+  const allowedVersionNumber = parseInt(minimumFirmwareVersion.split(/\./).map(i => i.padStart(2,'0')).join(""))
 
-  if (!firmwareValid) {
+  if (firmwareVersionNumber < allowedVersionNumber) {
     socket.destroy()
     throw Error("old_firmware")
   }

@@ -1,8 +1,9 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, crashReporter } from 'electron'
+import { app, protocol, BrowserWindow, crashReporter, nativeImage } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -10,6 +11,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 let win: BrowserWindow | null
 
 app.allowRendererProcessReuse = false
+app.commandLine.appendSwitch('no-sandbox')
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -26,13 +28,11 @@ function createWindow() {
     frame: false,
     show: false,
     webPreferences: {
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       enableRemoteModule: true,
-      nodeIntegration: (process.env
-        .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
-      devTools: process.env.WEBPACK_DEV_SERVER_URL ? true : false
-    }
+      nodeIntegration: true,
+      devTools: isDevelopment ? true : false,
+      sandbox: false
+    },
   })
 
   win.once('ready-to-show', () => {

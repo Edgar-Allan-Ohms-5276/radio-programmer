@@ -1,12 +1,12 @@
 {
   "name": "radio-programmer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/Edgar-Allan-Ohms-5276/radio-programmer.git"
   },
-  "description": "An FRC Radio Programmer made be EAO 5276",
+  "description": "An FRC Radio Programmer made by EAO 5276",
   "author": "Edgar Allan Ohms 5276",
   "scripts": {
     "build": "vue-cli-service electron:build",
@@ -17,12 +17,14 @@
   },
   "main": "background.js",
   "dependencies": {
+    "@babel/preset-env": "^7.14.7",
     "cap": "^0.2.1",
     "core-js": "^3.6.5",
     "csv-parser": "^2.3.3",
     "tcp-ping": "^0.1.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
+    "vue-directive-long-press": "^1.1.0",
     "vue-material-design-icons": "^4.9.0",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0"
@@ -33,10 +35,10 @@
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli": "^4.5.7",
     "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-eslint": "^3.1.1",
     "@vue/cli-plugin-router": "^4.5.7",
     "@vue/cli-plugin-typescript": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-service": "^4.5.13",
     "@vue/eslint-config-typescript": "^5.0.2",
     "electron": "^9.0.0",
     "electron-devtools-installer": "^3.1.0",
