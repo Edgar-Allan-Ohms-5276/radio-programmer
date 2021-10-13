@@ -1,4 +1,5 @@
 import { Socket } from 'net'
+import { markTeamProgrammed } from './store'
 
 const minimumFirmwareVersion = "19.0.0"
 const radioIP = "192.168.1.1"
@@ -96,6 +97,7 @@ export async function programRadio(
   outPacket = outPacket.concat("\n")
   socket.write(outPacket)
   console.log("Programming Complete")
+  markTeamProgrammed(teamNum)
   socket.destroy()
 }
 

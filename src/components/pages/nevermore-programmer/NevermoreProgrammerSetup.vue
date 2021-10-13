@@ -5,9 +5,12 @@
     </button>
     <h1>Nevermore FMS Kiosk Setup</h1>
     <div class="nvr-prg-holder">
-      <span class="warning">
-        It is highly recommended to set static IPs of 192.168.1.2/24 and
-        10.0.0.50/8 for the kiosk
+      <span class="warning" v-if="cantSetStaticIp != null">
+        Unable to set static ips because {{ cantSetStaticIp }}. Please manually
+        set ips 192.168.1.2/24 and 10.0.0.50/8 for the kiosk
+      </span>
+      <span class="success" v-if="cantSetStaticIp == null">
+        Static ips will be automatically set
       </span>
       <div class="nvr-prg-row">
         <Select
@@ -120,11 +123,13 @@ import Select from "../../form/Select.vue";
 import Checkbox from "../../form/Checkbox.vue";
 import { Mode } from "../../../programming/radio";
 import querystring from "querystring";
+import { becomeKiosk } from "../../../kioskify";
 import electron from "electron";
 import fs from "fs";
 import csv from "csv-parser";
 import "./NevermoreProgrammer.scss";
 import { getInterfaces, NetworkInterface } from "@/raw-networking/interface";
+import { canSetStaticIp } from "@/staticip";
 
 export enum WpaKeyImportType {
   CSV = "csv",
@@ -148,6 +153,7 @@ export interface TeamEntry {
 })
 export default class NevermoreProgrammerSetup extends Vue {
   Mode = Mode;
+  cantSetStaticIp = canSetStaticIp();
   WpaKeyImportType = WpaKeyImportType;
 
   mounted() {
@@ -239,8 +245,8 @@ export default class NevermoreProgrammerSetup extends Vue {
         ? "network"
         : JSON.stringify(importData);
 
-    electron.remote.getCurrentWindow().setAlwaysOnTop(true);
-    electron.remote.getCurrentWindow().setKiosk(true);
+    becomeKiosk(this.networkAdapters.filter((i) => i.id === this.netInterfaceInput)[0]);
+
     this.$router.push(
       "/programmer/nevermore/kiosk?" +
         querystring.stringify({

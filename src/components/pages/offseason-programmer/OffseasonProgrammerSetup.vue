@@ -5,9 +5,12 @@
     </button>
     <h1>Offseason FMS Kiosk Setup</h1>
     <div class="ofs-prg-holder">
-      <span class="warning">
-        It is highly recommended to set static IPs of 192.168.1.2/24 and
-        10.0.0.50/8 for the kiosk
+      <span class="warning" v-if="cantSetStaticIp != null">
+        Unable to set static ips because {{ cantSetStaticIp }}. Please manually
+        set ips 192.168.1.2/24 and 10.0.0.50/8 for the kiosk
+      </span>
+      <span class="success" v-if="cantSetStaticIp == null">
+        Static ips will be automatically set
       </span>
       <div class="ofs-prg-row">
         <Input label="SSID" v-model="ssidInput" />
@@ -81,7 +84,8 @@ import Select from "../../form/Select.vue";
 import Checkbox from "../../form/Checkbox.vue";
 import { Mode, ssidRegex, wpakeyRegex } from "../../../programming/radio";
 import querystring from "querystring";
-import electron from "electron";
+import { becomeKiosk } from "../../../kioskify";
+import { canSetStaticIp, setStaticIp } from "../../../staticip";
 import "./OffseasonProgrammer.scss";
 import { getInterfaces, NetworkInterface } from "@/raw-networking/interface";
 
@@ -95,6 +99,7 @@ import { getInterfaces, NetworkInterface } from "@/raw-networking/interface";
 })
 export default class OffseasonProgrammerSetup extends Vue {
   Mode = Mode;
+  cantSetStaticIp = canSetStaticIp();
 
   mounted() {
     this.findNetworkAdapters();
@@ -127,8 +132,9 @@ export default class OffseasonProgrammerSetup extends Vue {
     if (this.errors.length > 0) {
       return;
     }
-    electron.remote.getCurrentWindow().setAlwaysOnTop(true);
-    electron.remote.getCurrentWindow().setKiosk(true);
+
+    becomeKiosk(this.networkAdapters.filter((i) => i.id === this.netInterfaceInput)[0]);
+
     this.$router.push(
       "/programmer/offseason/kiosk?" +
         querystring.stringify({

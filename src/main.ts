@@ -10,8 +10,11 @@ import OffseasonProgrammerSetup from "./components/pages/offseason-programmer/Of
 import OffseasonProgrammerKiosk from "./components/pages/offseason-programmer/OffseasonProgrammerKiosk.vue"
 import NevermoreProgrammerSetup from "./components/pages/nevermore-programmer/NevermoreProgrammerSetup.vue"
 import NevermoreProgrammerKiosk from "./components/pages/nevermore-programmer/NevermoreProgrammerKiosk.vue"
+import NevermoreProgrammerStatus from "./components/pages/nevermore-programmer/NevermoreProgrammerStatus.vue"
+
 import electron from 'electron'
 import LongPress from 'vue-directive-long-press'
+import { isInKiosk } from './kioskify'
  
 Vue.directive('long-press', LongPress)
 
@@ -27,7 +30,8 @@ const routes = [
   { path: "/programmer/offseason/setup", component: OffseasonProgrammerSetup },
   { path: "/programmer/offseason/kiosk", component: OffseasonProgrammerKiosk },
   { path: "/programmer/nevermore/setup", component: NevermoreProgrammerSetup },
-  { path: "/programmer/nevermore/kiosk", component: NevermoreProgrammerKiosk }
+  { path: "/programmer/nevermore/kiosk", component: NevermoreProgrammerKiosk },
+  { path: "/programmer/nevermore/kiosk/status", component: NevermoreProgrammerStatus }
 ];
 
 const router = new VueRouter({
@@ -36,7 +40,7 @@ const router = new VueRouter({
 
 // Block going from kiosk to setup
 router.beforeEach((to, from, next) => {
-  if (from.fullPath.includes("/kiosk") && to.fullPath.includes("/setup")) {
+  if (isInKiosk() && to.fullPath.includes("/setup")) {
     next(false)
     return
   }
