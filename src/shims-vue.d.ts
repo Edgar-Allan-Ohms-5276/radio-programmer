@@ -4,3 +4,5 @@ declare module '*.vue' {
 }
 
 declare module 'vue-directive-long-press';
+
+declare module 'set-ip-address';

@@ -82,7 +82,9 @@ export default class NevermoreProgrammerKiosk extends Vue {
 
     this.wifiBand = this.$route.query["wifiBand"] as Mode;
     this.importData = this.$route.query["importData"] as any;
-    if (this.importData !== "network") {
+    if (this.importData === "network") {
+      throw new Error("Network teams not implemented yet");
+    } else {
       this.importData = JSON.parse(this.importData as any);
     }
     this.firewall = this.$route.query["firewall"] === "true";
@@ -146,6 +148,37 @@ export default class NevermoreProgrammerKiosk extends Vue {
     ) {
       event.preventDefault();
     }
+  }
+
+  created() {
+    window.addEventListener("keydown", this.keydown);
+    window.addEventListener("keyup", this.keyup);
+  }
+  beforeDestroy() {
+    window.removeEventListener("keydown", this.keydown);
+    window.removeEventListener("keyup", this.keyup);
+  }
+
+  keys: string[] = [];
+  keydown(e: KeyboardEvent) {
+    this.keys.push(e.key);
+    if (
+      this.keys.includes("n") &&
+      this.keys.includes("v") &&
+      this.keys.includes("r")
+    ) {
+      const importDataString = JSON.stringify(this.importData);
+      this.$router.push(
+        "/programmer/nevermore/kiosk/status?" +
+          querystring.stringify({
+            kiosk: true,
+            importData: importDataString,
+          })
+      );
+    }
+  }
+  keyup(e: KeyboardEvent) {
+    this.keys = this.keys.filter((k) => k != e.key);
   }
 
   back() {
