@@ -111,6 +111,8 @@ export default class OffseasonProgrammerKiosk extends Vue {
           enableBandwidthLimit: this.bandwidth,
           enddate: this.enddate,
           performCheck: this.prgmCheck,
+          useEnterprise: false,
+          username: "",
           kiosk: true,
         })
     );

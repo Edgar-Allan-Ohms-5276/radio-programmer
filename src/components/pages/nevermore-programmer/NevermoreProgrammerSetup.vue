@@ -103,6 +103,16 @@
           :default="true"
           v-model="prgmCheckInput"
         />
+        <Checkbox
+          label="Use WPA Enterprise (Username w/ Password)"
+          :default="false"
+          v-model="useEnterprise"
+        />
+        <Input
+          label="Network SSID"
+          v-if="useEnterprise"
+          v-model="ssid"
+        />
       </div>
       <div v-for="error in errors" :key="error" class="error">
         {{ error }}
@@ -166,6 +176,8 @@ export default class NevermoreProgrammerSetup extends Vue {
   firewallInput = true;
   bandwidthInput = true;
   prgmCheckInput = true;
+  useEnterprise = false;
+  ssid = "";
   eventDurationInput = 0;
   netInterfaceInput = "";
 
@@ -259,6 +271,8 @@ export default class NevermoreProgrammerSetup extends Vue {
             this.eventDurationInput &&
             Date.now() + this.eventDurationInput * 24 * 60 * 60 * 1000,
           netInterface: this.netInterfaceInput,
+          useEnterprise: this.useEnterprise,
+          ssid: this.ssid,
           kiosk: true,
         })
     );
