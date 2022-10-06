@@ -188,7 +188,7 @@ export default class Prgm extends Vue {
         });
       }
       this.state = State.DONE;
-    } catch (e: any) {
+    } catch (e) {
       const r = e.message;
       if (r === "timeout") {
         this.error(
