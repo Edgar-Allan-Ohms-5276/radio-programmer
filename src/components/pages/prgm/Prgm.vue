@@ -119,7 +119,9 @@ export default class Prgm extends Vue {
       !("enableFirewall" in this.$route.query) ||
       !("enableBandwidthLimit" in this.$route.query) ||
       !("enddate" in this.$route.query) ||
-      !("performCheck" in this.$route.query)
+      !("performCheck" in this.$route.query) ||
+      !("useEnterprise" in this.$route.query) ||
+      !("username" in this.$route.query)
     ) {
       throw new Error("Invalid query string");
     }
@@ -133,6 +135,8 @@ export default class Prgm extends Vue {
       this.$route.query["enableBandwidthLimit"] === "true";
     this.enddate = parseInt(this.$route.query["enddate"].toString());
     this.performCheck = this.$route.query["performCheck"] === "true";
+    this.useEnterprise = this.$route.query["useEnterprise"] === "true";
+    this.username = this.$route.query["username"].toString();
   }
 
   async mounted() {
@@ -141,7 +145,7 @@ export default class Prgm extends Vue {
   }
 
   async startProgramming() {
-    try { this.continueProgramming(false) } catch {}
+    try { this.continueProgramming(false) } catch { console.log("") }
     this.pingActive = true;
     this.state = State.PROGRAMMING;
     this.resetStatuses();
@@ -155,6 +159,8 @@ export default class Prgm extends Vue {
         this.enableFirewall,
         this.enableBandwidthLimit,
         this.enddate,
+        this.useEnterprise,
+        this.username,
         () => {
           return new Promise((resolve) => {
             this.state = State.REQUIRE_APPROVAL;
@@ -182,7 +188,7 @@ export default class Prgm extends Vue {
         });
       }
       this.state = State.DONE;
-    } catch (e) {
+    } catch (e: any) {
       const r = e.message;
       if (r === "timeout") {
         this.error(
@@ -244,6 +250,8 @@ export default class Prgm extends Vue {
   enableBandwidthLimit: boolean;
   enddate: number;
   performCheck: boolean;
+  useEnterprise: boolean;
+  username: string;
 
   pingActive = true;
 

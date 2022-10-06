@@ -88,6 +88,8 @@ export default class StandardProgrammer extends Vue {
       enableFirewall: this.firewallInput,
       enableBandwidthLimit: this.bandwidthInput,
       enddate: 0,
+      useEnterprise: false,
+      username: "",
       performCheck: false
     }))
   }

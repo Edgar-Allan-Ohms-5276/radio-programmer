@@ -62,6 +62,8 @@ export default class NevermoreProgrammerKiosk extends Vue {
   prgmCheck: boolean;
   enddate: number;
   netInterface: string;
+  useEnterprise: boolean;
+  ssid: string;
 
   errors: string[] = [];
 
@@ -75,6 +77,8 @@ export default class NevermoreProgrammerKiosk extends Vue {
       !("enddate" in this.$route.query) ||
       !("prgmCheck" in this.$route.query) ||
       !("netInterface" in this.$route.query) ||
+      !("useEnterprise" in this.$route.query) ||
+      !("ssid" in this.$route.query) ||
       !("importData" in this.$route.query)
     ) {
       throw new Error("Invalid query string");
@@ -92,6 +96,8 @@ export default class NevermoreProgrammerKiosk extends Vue {
     this.enddate = parseInt(this.$route.query["enddate"].toString());
     this.prgmCheck = this.$route.query["prgmCheck"] === "true";
     this.netInterface = this.$route.query["netInterface"].toString();
+    this.useEnterprise = this.$route.query["useEnterprise"] === "true";
+    this.ssid = this.$route.query["ssid"].toString();
   }
 
   startProgramRadio() {
@@ -114,7 +120,25 @@ export default class NevermoreProgrammerKiosk extends Vue {
     if (this.errors.length > 0) {
       return;
     }
-    this.$router.push(
+    if (this.useEnterprise) {
+      this.$router.push(
+      "/prgm?" +
+        querystring.stringify({
+          mode: this.wifiBand,
+          teamNum: this.teamNumInput,
+          ssid: this.ssid,
+          wpaKey: teamEntry!!.wpaKey,
+          enableFirewall: this.firewall,
+          enableBandwidthLimit: this.bandwidth,
+          enddate: this.enddate,
+          performCheck: this.prgmCheck,
+          useEnterprise: true,
+          username: teamEntry!!.ssid,
+          kiosk: true,
+        })
+    );
+    } else {
+      this.$router.push(
       "/prgm?" +
         querystring.stringify({
           mode: this.wifiBand,
@@ -125,9 +149,12 @@ export default class NevermoreProgrammerKiosk extends Vue {
           enableBandwidthLimit: this.bandwidth,
           enddate: this.enddate,
           performCheck: this.prgmCheck,
+          useEnterprise: false,
+          username: "",
           kiosk: true,
         })
     );
+    }
   }
 
   startFlashRadio() {

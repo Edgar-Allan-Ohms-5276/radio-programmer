@@ -39,6 +39,8 @@ export async function programRadio(
   enableFirewall: boolean,
   enableBandwidthLimit: boolean,
   enddate: number,
+  useEnterprise: boolean,
+  username: string,
   currentEventApprovalFunc: () => Promise<boolean>
 ): Promise<void> {
   if (teamNum < 1 || teamNum > 9999) {
@@ -81,6 +83,7 @@ export async function programRadio(
 
   const firewallStr = enableFirewall ? "Y" : "N"
   const bandwidthStr = enableBandwidthLimit ? defaultBandwidthLimit : ""
+  const enterpriseStr = useEnterprise ? "Y" : "N"
 
   let outPacket = ""
   outPacket = outPacket.concat(mode, ",")
@@ -93,7 +96,9 @@ export async function programRadio(
   outPacket = outPacket.concat("0", ",")
   outPacket = outPacket.concat("0", ",")
   outPacket = outPacket.concat("Programmed_With_EAO_Programmer", ",")
-  outPacket = outPacket.concat(enddate.toString())
+  outPacket = outPacket.concat(enddate.toString(), ",")
+  outPacket = outPacket.concat(enterpriseStr, ",")
+  outPacket = outPacket.concat(username)
   outPacket = outPacket.concat("\n")
   socket.write(outPacket)
   console.log("Programming Complete")
